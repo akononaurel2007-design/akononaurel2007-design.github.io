@@ -109,11 +109,52 @@ a {
 ========================= */
 
 .hero {
-    background: var(--navy);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: #020907;
     color: var(--white);
     min-height: 90vh;
     display: flex;
     align-items: center;
+}
+
+.hero::before,
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero::before {
+    opacity: 0.58;
+    background:
+        linear-gradient(rgba(58, 255, 160, 0.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(58, 255, 160, 0.3) 1px, transparent 1px);
+    background-size: 34px 34px;
+    animation: hero-grid-drift 12s linear infinite;
+}
+
+.hero::after {
+    inset: -35% 0 auto;
+    height: 28%;
+    background: linear-gradient(180deg, transparent, rgba(58, 255, 160, 0.3), transparent);
+    animation: hero-screen-scan 5s linear infinite;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes hero-grid-drift {
+    to { background-position: 34px 34px; }
+}
+
+@keyframes hero-screen-scan {
+    to { transform: translateY(180vh); }
 }
 
 .hero-content {
@@ -221,9 +262,54 @@ a {
     position: absolute;
     width: 330px;
     height: 390px;
+    background: #020907;
     border: 2px solid var(--orange);
     border-radius: 20px;
+    overflow: hidden;
     transform: rotate(6deg);
+}
+
+.image-decoration::before,
+.image-decoration::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+}
+
+.image-decoration::before {
+    inset: -25%;
+    opacity: 0.45;
+    background:
+        repeating-linear-gradient(90deg, transparent 0 18px, rgba(58, 255, 160, 0.7) 19px 20px, transparent 21px 34px),
+        repeating-linear-gradient(180deg, transparent 0 14px, rgba(58, 255, 160, 0.25) 15px 16px, transparent 17px 30px);
+    animation: code-scroll 7s linear infinite;
+}
+
+.image-decoration::after {
+    top: -35%;
+    left: 0;
+    width: 100%;
+    height: 28%;
+    background: linear-gradient(180deg, transparent, rgba(58, 255, 160, 0.3), transparent);
+    animation: screen-scan 4s linear infinite;
+}
+
+@keyframes code-scroll {
+    from { transform: translateY(-20px); }
+    to { transform: translateY(20px); }
+}
+
+@keyframes screen-scan {
+    to { transform: translateY(520px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero::before,
+    .hero::after,
+    .image-decoration::before,
+    .image-decoration::after {
+        animation: none;
+    }
 }
 
 /* =========================
